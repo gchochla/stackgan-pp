@@ -1,0 +1,30 @@
+#!/bin/bash
+
+Ng=32
+Nd=26
+cond_dim=128
+z_dim=100
+device="cuda:1"
+restore="--restore"
+dataset_dir="/data/CUB_200_2011/"
+image_dir="images"
+emb_dir="embeddings_train"
+batch_size=32
+glr=0.0001
+dlr=0.0001
+kl_coef=0.015
+uncond_coef=0
+wrong_coef=0.5
+aux_coef=0.
+epochs=600
+lfp=0.01
+log_dir="./stackgan_v2_logs"
+verbose="-v"
+model_dir="./stackgan_v2_models"
+checkpoint_interval=30
+
+python zsl/training/stackgan_v2.py -ng $Ng -nd $Nd -cd $cond_dim -zd $z_dim -dvc $device \
+$restore -dd $dataset_dir -id $image_dir -ed $emb_dir -bs $batch_size --glr $glr --dlr $dlr \
+--kl_coef $kl_coef --uncond_coef $uncond_coef --wrong_coef $wrong_coef --aux_coef $aux_coef \
+--epochs $epochs -lfp $lfp -ld $log_dir $verbose -md $model_dir -ci $checkpoint_interval \
+-avc trainclasses.txt
